@@ -24,7 +24,7 @@ Stratford or another high school, and drop any zip with no Memorial HS coverage.
 Done when: no `VERIFY` comments remain, each changed value has its source URL in
 a trailing comment, `pytest` passes.
 
-## [ ] WP2  Store
+## [x] WP2  Store
 Files: `store.py`, `tests/test_store.py`
 
 Implement `normalize_key` and `Store` on stdlib `sqlite3`. Tables: `listings`
