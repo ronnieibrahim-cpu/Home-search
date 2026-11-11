@@ -1,0 +1,147 @@
+{# Shared pieces for the digest and hot-alert emails. WP10.
+   Email-client-safe: tables for layout, inline styles only, no JS, no images,
+   no web fonts. Every colour is set as a background/foreground pair with
+   adequate contrast, so the mail reads the same whether a client leaves it as
+   is or inverts it for dark mode. Autoescape is on: nothing here is |safe. #}
+
+{% set FONT = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;" %}
+{% set TEXT = "color:#1b1f24;" %}
+{% set MUTED = "color:#4a5560;" %}
+{% set LINK = "color:#0b57d0;text-decoration:underline;" %}
+
+{% macro page(m) %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>{{ m.subject }}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#eef1f4;{{ TEXT }}{{ FONT }}">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">{{ m.preheader }}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eef1f4" style="background-color:#eef1f4;">
+<tr><td align="center" style="padding:12px 8px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:640px;width:100%;background-color:#ffffff;border:1px solid #d5dbe1;border-radius:6px;">
+{{ caller() }}
+</table>
+</td></tr>
+</table>
+</body>
+</html>
+{% endmacro %}
+
+{% macro section(title) %}
+<tr><td style="padding:18px 16px 4px 16px;border-top:1px solid #e3e7eb;">
+<h2 style="margin:0 0 8px 0;font-size:18px;line-height:24px;font-weight:700;{{ TEXT }}{{ FONT }}">{{ title }}</h2>
+{{ caller() }}
+</td></tr>
+{% endmacro %}
+
+{% macro para(text, muted=false) %}
+<p style="margin:0 0 8px 0;font-size:14px;line-height:20px;{{ MUTED if muted else TEXT }}{{ FONT }}">{{ text }}</p>
+{% endmacro %}
+
+{% macro link(text, url) %}
+{% if url %}<a href="{{ url }}" style="{{ LINK }}">{{ text }}</a>{% else %}{{ text }}{% endif %}
+{% endmacro %}
+
+{% macro tag(text) %}
+<span style="display:inline-block;margin:0 4px 4px 0;padding:1px 7px;font-size:12px;line-height:18px;border:1px solid #9aa5b1;border-radius:9px;background-color:#f1f4f8;color:#1b1f24;">{{ text }}</span>
+{% endmacro %}
+
+{% macro verdict_badge(code, label) %}
+{% if code == "buy" %}{% set st = "background-color:#e6f4ea;color:#0f5129;border:1px solid #0f5129;" %}
+{% elif code == "rent" %}{% set st = "background-color:#fdecea;color:#7a1414;border:1px solid #7a1414;" %}
+{% else %}{% set st = "background-color:#fff4d6;color:#5c4200;border:1px solid #5c4200;" %}{% endif %}
+<span style="display:inline-block;padding:1px 8px;font-size:12px;line-height:18px;font-weight:700;border-radius:3px;{{ st }}">{{ label }}</span>
+{% endmacro %}
+
+{% macro kv_rows(rows) %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:13px;line-height:18px;{{ FONT }}">
+{% for k, v in rows %}
+<tr>
+<td style="padding:2px 8px 2px 0;{{ MUTED }}" valign="top">{{ k }}</td>
+<td align="right" style="padding:2px 0;{{ TEXT }}" valign="top">{{ v }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endmacro %}
+
+{% macro label(text) %}<span style="font-weight:700;{{ TEXT }}">{{ text }}</span>{% endmacro %}
+
+{% macro card(c) %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 14px 0;border:1px solid #d5dbe1;border-radius:6px;background-color:#ffffff;">
+<tr><td style="padding:12px;{{ FONT }}{{ TEXT }}">
+<div style="font-size:16px;line-height:22px;font-weight:700;{{ TEXT }}">
+{% if c.rank %}{{ c.rank }}. {% endif %}{{ link(c.address, c.url) }}
+</div>
+<div style="font-size:13px;line-height:18px;{{ MUTED }}">{{ c.place }}</div>
+{% if c.raw_url %}
+<div style="font-size:12px;line-height:16px;{{ MUTED }}">Listing link (not http/https, not linked): {{ c.raw_url }}</div>
+{% endif %}
+<div style="margin:6px 0 2px 0;font-size:18px;line-height:24px;font-weight:700;{{ TEXT }}">{{ c.price }}{% if c.status %} <span style="font-size:13px;font-weight:400;{{ MUTED }}">({{ c.status }})</span>{% endif %}</div>
+{% if c.facts %}<div style="font-size:13px;line-height:18px;{{ TEXT }}">{{ c.facts }}</div>{% endif %}
+
+{% if c.score %}
+<div style="margin:8px 0 4px 0;font-size:14px;line-height:20px;{{ TEXT }}">{{ label("Score " ~ c.score ~ "/100") }}</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-size:12px;line-height:16px;{{ FONT }}"><tr>
+{% for k, v in c.parts %}
+<td align="center" style="padding:3px 6px;border:1px solid #d5dbe1;background-color:#f6f8fa;color:#1b1f24;">{{ k }}<br><span style="font-weight:700;">{{ v }}</span></td>
+{% endfor %}
+</tr></table>
+{% endif %}
+
+{% if c.flags %}
+<div style="margin:8px 0 0 0;">{% for f in c.flags %}{{ tag(f) }}{% endfor %}</div>
+{% endif %}
+
+<div style="margin:8px 0 0 0;font-size:13px;line-height:18px;{{ TEXT }}">
+{{ label("Zoning: ") }}{{ c.zoning.schools }}{% if c.zoning.source %} <span style="{{ MUTED }}">({{ c.zoning.source }})</span>{% endif %}
+<br><span style="{{ 'color:#0f5129;' if c.zoning.verified else 'color:#7a1414;' }}font-weight:700;">{{ c.zoning.confidence }}</span><span style="{{ MUTED }}">; {% if c.zoning.district %}{{ c.zoning.district }}, {% endif %}{{ c.zoning.vintage }}</span>
+{% if c.zoning.ratings %}<br><span style="{{ MUTED }}">Ratings: {{ c.zoning.ratings }}</span>{% endif %}
+</div>
+
+<div style="margin:6px 0 0 0;font-size:13px;line-height:18px;{{ TEXT }}">
+{{ label("Flood zone: ") }}{{ c.flood.zone }}
+{% for n in c.flood.notes %}<br><span style="{{ MUTED }}">&bull; {{ n }}</span>{% endfor %}
+</div>
+
+{% if c.cost %}
+<div style="margin:8px 0 2px 0;font-size:13px;line-height:18px;{{ TEXT }}">
+{{ label("Monthly cost " ~ c.cost.total) }}<span style="{{ MUTED }}">: {{ c.cost.scenario }}, {{ c.cost.terms }}</span>
+</div>
+{{ kv_rows(c.cost["items"]) }}
+{% endif %}
+
+{% if c.afford %}
+<div style="margin:8px 0 0 0;font-size:13px;line-height:18px;{{ TEXT }}">
+{{ label("Your plan: ") }}{{ c.afford.plan_basis }}/mo plan basis; cash needed {{ c.afford.cash_needed }} of {{ c.afford.cash_available }} projected; DTI {{ c.afford.dti }};
+{% if c.afford.within_comfort %}<span style="color:#0f5129;font-weight:700;">within your comfort level</span>{% else %}<span style="color:#7a1414;font-weight:700;">NOT within your comfort level</span>{% endif %}
+{% for b in c.afford.blockers %}<br><span style="color:#7a1414;">&#9888; {{ b }}</span>{% endfor %}
+</div>
+{% endif %}
+
+{% if c.rvb %}
+<div style="margin:8px 0 0 0;font-size:13px;line-height:18px;{{ TEXT }}">
+{{ label("Rent vs buy: ") }}{{ verdict_badge(c.rvb.verdict_code, c.rvb.verdict) }}
+<span style="{{ MUTED }}">{{ c.rvb.summary }}.</span>
+</div>
+<ul style="margin:4px 0 0 0;padding:0 0 0 18px;font-size:13px;line-height:18px;{{ TEXT }}">
+{% for s in c.rvb.rationale %}<li style="margin:0 0 2px 0;">{{ s }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+{% if c.description %}
+<div style="margin:8px 0 0 0;font-size:12px;line-height:17px;font-style:italic;{{ MUTED }}">Listing says: &ldquo;{{ c.description }}&rdquo;</div>
+{% endif %}
+</td></tr>
+</table>
+{% endmacro %}
+
+{% macro caveats(f) %}
+{{ para(f.limits, true) }}
+{{ para(f.flood, true) }}
+{{ para(f.zoning, true) }}
+{% endmacro %}

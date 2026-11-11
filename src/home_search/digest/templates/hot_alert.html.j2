@@ -1,0 +1,13 @@
+{# WP10. Hot-listing alert: one card plus the caveats. Same email-safe rules as the digest. #}
+{% import "_macros.html.j2" as ui with context %}
+{% call ui.page(m) %}
+<tr><td style="padding:16px 16px 4px 16px;">
+<h1 style="margin:0 0 6px 0;font-size:20px;line-height:26px;font-weight:700;{{ ui.TEXT }}{{ ui.FONT }}">{{ m.subject }}</h1>
+{{ ui.para(m.intro, true) }}
+</td></tr>
+<tr><td style="padding:4px 16px 0 16px;">{{ ui.card(m.card) }}</td></tr>
+{% call ui.section("Notes and limits") %}
+{{ ui.caveats(m.footer) }}
+{% endcall %}
+<tr><td style="height:8px;line-height:8px;font-size:8px;">&nbsp;</td></tr>
+{% endcall %}

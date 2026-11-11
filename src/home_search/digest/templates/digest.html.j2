@@ -1,2 +1,96 @@
-{# WP10. Email-client-safe HTML: tables for layout, inline styles, no JS, no web fonts,
-   max width 640px, readable in dark mode. Every listing links to its source URL. #}
+{# WP10. Weekly digest. Email-client-safe HTML: tables for layout, inline styles, no JS,
+   no web fonts, max width 640px, readable in dark mode. Every listing links to its
+   source URL when that URL is http(s). Sections follow render.py's docstring order. #}
+{% import "_macros.html.j2" as ui with context %}
+{% call ui.page(m) %}
+{% if m.banner %}
+<tr><td style="padding:10px 16px;background-color:#fff4d6;color:#5c4200;font-size:14px;line-height:20px;font-weight:700;{{ ui.FONT }}">{{ m.banner }}</td></tr>
+{% endif %}
+<tr><td style="padding:16px 16px 4px 16px;">
+<h1 style="margin:0 0 4px 0;font-size:20px;line-height:26px;font-weight:700;{{ ui.TEXT }}{{ ui.FONT }}">{{ m.subject }}</h1>
+</td></tr>
+
+{% call ui.section("1. The short answer") %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+{% for it in m.summary %}
+{% if it.tone == "warn" %}
+<tr><td style="padding:8px 10px;margin:0 0 6px 0;background-color:#fff4d6;color:#5c4200;border-left:4px solid #8a6200;font-size:14px;line-height:20px;{{ ui.FONT }}">
+<span style="font-weight:700;">{{ it.lead }}</span> {{ it.text }}
+</td></tr>
+<tr><td style="height:6px;line-height:6px;font-size:6px;">&nbsp;</td></tr>
+{% else %}
+<tr><td style="padding:4px 0;font-size:14px;line-height:20px;{{ ui.TEXT }}{{ ui.FONT }}">
+<span style="font-weight:700;">{{ it.lead }}</span>
+{% if it.tone in ("buy", "rent", "close_call") %}{{ ui.verdict_badge(it.tone, {"buy": "Buy", "rent": "Rent", "close_call": "Close call"}[it.tone]) }}{% endif %}
+{{ it.text }}
+{% if it.sub %}
+<ul style="margin:4px 0 0 0;padding:0 0 0 18px;">
+{% for s in it.sub %}<li style="margin:0 0 2px 0;font-size:13px;line-height:18px;">{{ s }}</li>{% endfor %}
+</ul>
+{% endif %}
+</td></tr>
+{% endif %}
+{% endfor %}
+</table>
+{% endcall %}
+
+{% call ui.section("2. Top candidates") %}
+{% if m.cards_note %}{{ ui.para(m.cards_note, true) }}{% endif %}
+{% for c in m.cards %}{{ ui.card(c) }}{% endfor %}
+{% endcall %}
+
+{% call ui.section("3. What changed this week") %}
+{% if not m.changes.groups %}{{ ui.para("No changes to the listings in this digest in the last 7 days.", true) }}{% endif %}
+{% for g in m.changes.groups %}
+<div style="margin:0 0 2px 0;font-size:14px;line-height:20px;font-weight:700;{{ ui.TEXT }}{{ ui.FONT }}">{{ g.title }}</div>
+<ul style="margin:0 0 8px 0;padding:0 0 0 18px;font-size:13px;line-height:18px;{{ ui.TEXT }}{{ ui.FONT }}">
+{% for r in g.rows %}<li style="margin:0 0 2px 0;">{{ ui.link(r.address, r.url) }}: {{ r.detail }}</li>{% endfor %}
+{% if g.more %}<li style="{{ ui.MUTED }}">and {{ g.more }} more</li>{% endif %}
+</ul>
+{% endfor %}
+{% if m.changes.other %}{{ ui.para("(" ~ m.changes.other ~ " other listing(s) changed that are not in this digest.)", true) }}{% endif %}
+{% endcall %}
+
+{% call ui.section("4. Rentals worth a look") %}
+{% if not m.rentals %}{{ ui.para("No rentals in the search areas this week.", true) }}{% endif %}
+{% for c in m.rentals %}{{ ui.card(c) }}{% endfor %}
+{% if m.rentals_more %}{{ ui.para("... and " ~ m.rentals_more ~ " more rentals.", true) }}{% endif %}
+{% endcall %}
+
+{% call ui.section("5. Market trend") %}
+{% if not m.market %}{{ ui.para("No market snapshots yet.", true) }}{% endif %}
+{% for a in m.market %}
+<div style="margin:6px 0 2px 0;font-size:14px;line-height:20px;{{ ui.TEXT }}{{ ui.FONT }}"><span style="font-weight:700;">{{ a.name }}</span>, week of {{ a.week }}
+<span style="{{ ui.MUTED }}">({% if a.single %}first week of data{% else %}change since {{ a.since }}, {{ a.weeks }} weeks of data{% endif %})</span></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 10px 0;font-size:13px;line-height:18px;{{ ui.FONT }}">
+{% for label, value, delta in a.rows %}
+<tr>
+<td style="padding:3px 6px 3px 0;border-bottom:1px solid #e3e7eb;{{ ui.MUTED }}">{{ label }}</td>
+<td align="right" style="padding:3px 6px;border-bottom:1px solid #e3e7eb;font-weight:700;{{ ui.TEXT }}">{{ value }}</td>
+<td align="right" style="padding:3px 0 3px 6px;border-bottom:1px solid #e3e7eb;{{ ui.MUTED }}">{{ delta if delta else "" }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endfor %}
+{% endcall %}
+
+{% call ui.section("6. Zoning unverified: check by hand") %}
+{{ ui.para(m.unverified_note, true) }}
+{% if not m.unverified %}{{ ui.para("None this week.", true) }}{% endif %}
+{% for c in m.unverified %}{{ ui.card(c) }}{% endfor %}
+{% endcall %}
+
+{% call ui.section("7. Notes and limits") %}
+{% if m.footer.outages %}
+<div style="margin:0 0 2px 0;font-size:13px;line-height:18px;font-weight:700;{{ ui.TEXT }}{{ ui.FONT }}">Source outages and warnings</div>
+<ul style="margin:0 0 8px 0;padding:0 0 0 18px;font-size:13px;line-height:18px;{{ ui.TEXT }}{{ ui.FONT }}">
+{% for o in m.footer.outages %}<li style="margin:0 0 2px 0;">{{ o }}</li>{% endfor %}
+</ul>
+{% else %}{{ ui.para("No source outages.", true) }}{% endif %}
+{% if m.footer.dropped %}{{ ui.para("Dropped this run: " ~ m.footer.dropped|join("; ") ~ ".", true) }}{% endif %}
+{% if m.footer.failures %}{{ ui.para("Listings skipped after a stage failure: " ~ m.footer.failures|join("; ") ~ ".", true) }}{% endif %}
+{{ ui.para(m.footer.as_of, true) }}
+{{ ui.caveats(m.footer) }}
+{% endcall %}
+<tr><td style="height:8px;line-height:8px;font-size:8px;">&nbsp;</td></tr>
+{% endcall %}

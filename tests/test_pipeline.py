@@ -308,8 +308,12 @@ def test_dry_run_alert_is_not_recorded(store, mail):
     assert not store.was_alerted(B1.key, 900_000)
 
 
-def test_alert_delivery_not_implemented_is_an_outage(store):
-    r = run(store)          # real WP10 stubs raise NotImplementedError
+def test_alert_delivery_not_implemented_is_an_outage(store, monkeypatch):
+    def not_implemented(email, dry_run=False):
+        raise NotImplementedError("WP10")
+
+    monkeypatch.setattr(pipeline.send_mod, "send", not_implemented)
+    r = run(store)
     assert r.alerts_sent == 0
     assert not store.was_alerted(B1.key, 900_000)
     assert any(o.startswith("hot alerts: not sent") for o in r.outages)
@@ -364,7 +368,11 @@ def test_digest_with_profile(store, mail):
     assert set(adv["plan_rate_bracket"]) == {0.06, 0.07}
 
 
-def test_digest_delivery_not_implemented_is_an_outage(store):
+def test_digest_delivery_not_implemented_is_an_outage(store, monkeypatch):
+    def not_implemented(email, dry_run=False):
+        raise NotImplementedError("WP10")
+
+    monkeypatch.setattr(pipeline.send_mod, "send", not_implemented)
     r = run(store, fn=pipeline.digest)
     assert "weekly digest: not sent, email delivery is not implemented yet" in r.outages
     assert store.snapshots("bellaire")                             # snapshot still saved

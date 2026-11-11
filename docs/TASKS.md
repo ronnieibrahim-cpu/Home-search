@@ -164,7 +164,7 @@ Done when: disqualifiers drop listings; a source outage is reported, not fatal;
 a hot alert is sent once per key-and-price; `home-search scan --dry-run` works
 on a laptop with no secrets set.
 
-## [ ] WP10  Digest and delivery
+## [x] WP10  Digest and delivery
 Files: `digest/render.py`, `digest/send.py`, `digest/templates/*`, `tests/test_digest.py`
 
 Follow the section order in `render.py`. Plain-text part is mandatory.
