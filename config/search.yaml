@@ -96,6 +96,31 @@ scoring:
   hot_alert_threshold: 85    # 0-100; at or above this, email immediately
   digest_min_score: 60
   digest_max_items: 15
+  # Breakpoints for each 0-100 part. Values the spec states are marked "spec";
+  # the rest are this tool's own judgment, tune freely.
+  params:
+    schools_full: 100              # spec: verified, preferred high, target elementary
+    schools_partial: 80            # only one of preferred high / target elementary
+    schools_verified_high: 60      # spec: verified target high only
+    schools_claim: 30              # spec: unverified claim of a target high
+    schools_unknown: 15            # unverified, nothing names a target high
+    value_band_pct: 0.15           # spec: >= 15% below median 100, >= 15% above 0
+    value_neutral: 50              # no market data or no sqft
+    value_price_cut_bonus: 10      # spec
+    value_dom_bonus: 5             # spec
+    value_dom_days: 45             # spec
+    flood_by_zone: {X: 100, X_shaded: 60, AE: 15, floodway: 0}   # spec: X 100, AE 15
+    flood_unknown: 30              # zone not determined; scored low until checked
+    flood_prior_flooding_cap: 40   # spec
+    fit_zero_shortfall_pct: 0.20   # spec
+    fit_unknown: 50                # listing does not state beds / baths / sqft ...
+    carry_full_ratio: 0.80         # spec
+    carry_zero_ratio: 1.20         # spec
+    carry_neutral: 50              # spec: no profile
+    lot_value_year_built_before: 1975   # spec
+    new_days: 7
+    recent_change_days: 30
+    market_weeks: 8                # spec: trailing 8-week median
 
 schedule:
   timezone: America/Chicago

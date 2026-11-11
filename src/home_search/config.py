@@ -74,11 +74,48 @@ class SchoolRules(_Strict):
     min_rating: int = 0
 
 
+class ScoringParams(_Strict):
+    """Breakpoints for the score parts (docs/ARCHITECTURE.md "Scoring").
+
+    All values come from search.yaml `scoring.params`; scoring.py holds no numbers.
+    """
+
+    # schools part
+    schools_full: float               # verified, preferred high, target elementary
+    schools_partial: float            # verified preferred high or target elementary, not both
+    schools_verified_high: float      # verified target high only
+    schools_claim: float              # unverified, listing claims a target high
+    schools_unknown: float            # unverified, nothing names a target high
+    # value part
+    value_band_pct: float             # $/sqft this far below (above) median scores 100 (0)
+    value_neutral: float              # no market or no sqft
+    value_price_cut_bonus: float
+    value_dom_bonus: float
+    value_dom_days: int               # bonus when days on market is above this
+    # flood part
+    flood_by_zone: dict[str, float]   # FloodRisk.fema_zone -> part
+    flood_unknown: float              # zone None (lookup failed, no polygon, no coords)
+    flood_prior_flooding_cap: float   # part never exceeds this with a "flooded" note
+    # fit part
+    fit_zero_shortfall_pct: float     # a miss this far below a minimum scores 0
+    fit_unknown: float                # listing does not state the field
+    # carrying_cost part (ratio of monthly cost to the profile's comfort level)
+    carry_full_ratio: float
+    carry_zero_ratio: float
+    carry_neutral: float              # no profile, no comfort level, or no cost
+    # flags and history windows
+    lot_value_year_built_before: int
+    new_days: int                     # "new" flag lasts this long
+    recent_change_days: int           # price_cut / back_on_market window, cut share
+    market_weeks: int                 # trailing snapshots for the value part
+
+
 class Scoring(_Strict):
     weights: dict[str, float]
     hot_alert_threshold: int = 85
     digest_min_score: int = 60
     digest_max_items: int = 15
+    params: ScoringParams | None = None
 
     @model_validator(mode="after")
     def _weights_sum_to_one(self) -> Scoring:

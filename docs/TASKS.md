@@ -154,7 +154,7 @@ appreciation never lowers `npv_buy_minus_rent`; zero-appreciation, zero-return
 case matches a hand-computed value; fallback rent is used and labelled when no
 comps exist; `rationale` cites the actual numbers.
 
-## [ ] WP9  Scoring and pipeline
+## [x] WP9  Scoring and pipeline
 Files: `scoring.py`, `pipeline.py`, `tests/test_scoring.py`, `tests/test_pipeline.py`
 
 Scoring formulas are in `docs/ARCHITECTURE.md`. The pipeline test runs end to
