@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "home-search"
+version = "0.1.0"
+description = "Houston home search, school-zone verification, rent-vs-buy analysis and email digests"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "jinja2>=3.1",
+    "shapely>=2.0",
+    "beautifulsoup4>=4.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+home-search = "home_search.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+home_search = ["digest/templates/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["network: hits a live site; excluded from CI"]
+addopts = "-m 'not network'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

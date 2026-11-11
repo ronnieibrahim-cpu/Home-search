@@ -1,0 +1,54 @@
+name: search
+# Scheduled runs are OFF until WP11: the pipeline is still stubs. Scheduled
+# workflows only fire from the default branch, so this must be merged to main.
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: scan or digest
+        default: scan
+        type: choice
+        options: [scan, digest]
+      dry_run:
+        description: write the email to out/ on the runner instead of sending
+        default: true
+        type: boolean
+  # schedule:
+  #   - cron: "17 11 * * 1-6"   # daily scan, about 6:17 am Central (5:17 in winter)
+  #   - cron: "23 12 * * 0"     # Sunday digest, about 7:23 am Central
+
+permissions:
+  contents: write               # to push the state branch
+
+concurrency:
+  group: search
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GMAIL_USER: ${{ secrets.GMAIL_USER }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      DIGEST_TO: ${{ secrets.DIGEST_TO }}
+      ALERT_GMAIL_LABEL: ${{ vars.ALERT_GMAIL_LABEL || 'home-search' }}
+      PROFILE_YAML: ${{ secrets.PROFILE_YAML }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+
+      # WP11: restore data/state.sqlite from the orphan `state` branch here.
+
+      - name: Run
+        run: |
+          cmd="${{ github.event_name == 'schedule' && (github.event.schedule == '23 12 * * 0' && 'digest' || 'scan') || inputs.command }}"
+          flag="${{ inputs.dry_run && '--dry-run' || '' }}"
+          home-search "$cmd" $flag
+
+      # WP11: commit data/state.sqlite back to the `state` branch here.
+      # Never upload out/ as an artifact: artifacts on a public repo are downloadable.

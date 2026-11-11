@@ -1,0 +1,17 @@
+# --- PRIVATE: this repo is public. None of these may ever be committed. ---
+config/profile.yaml
+.env
+out/
+*.eml
+
+# local state (CI keeps its copy on the `state` branch)
+data/state.sqlite
+data/state.sqlite-*
+data/cache/
+
+# python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/

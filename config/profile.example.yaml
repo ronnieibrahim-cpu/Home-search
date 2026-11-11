@@ -1,0 +1,37 @@
+# Your household's numbers. Copy to config/profile.yaml (gitignored) and fill in.
+# For GitHub Actions, paste the finished file into a repository secret named
+# PROFILE_YAML. THIS REPO IS PUBLIC: never commit the real file, and never
+# print these values in logs or commit a rendered digest.
+
+household:
+  adults: 2
+  children_ages: []                # drives which school levels matter and when
+
+income:
+  gross_annual: 0
+  expected_gross_annual_2027: 0    # if a raise / job change is expected
+  marginal_federal_rate: 0.0
+  filing_status: married_joint
+
+savings:
+  liquid_for_down_payment: 0       # cash + taxable you'd actually deploy
+  monthly_savings_rate: 0          # added to the above each month until purchase
+  emergency_fund_months_to_keep: 6
+  retirement_balances: 0           # context only; never counted as down payment
+
+debts:
+  monthly_non_housing: 0           # student loans, auto, etc.
+  student_loan_balance: 0
+
+current_housing:
+  monthly_rent_or_payment: 0
+  city: ""
+  lease_end: null                  # YYYY-MM-DD
+
+preferences:
+  max_comfortable_monthly_housing: 0   # all-in PITI + insurance + HOA + maintenance
+  max_dti_back_end: 0.36               # your own ceiling, not the lender's
+  physician_loan_eligible: false
+  commute_anchors: []                  # e.g. [{name: "Work", address: "..."}]
+  max_commute_minutes: 30
+  flood_tolerance: x_only              # x_only | allow_500yr | allow_100yr

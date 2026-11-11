@@ -1,0 +1,66 @@
+# Market and cost assumptions for the financial model. Not personal, safe to commit.
+# Every number here is a starting estimate. The implementer must confirm the ones
+# marked VERIFY against the cited authority, and record the date checked in
+# `as_of`. The digest footer prints `as_of` so stale assumptions are visible.
+
+as_of: null                    # set to YYYY-MM-DD when verified
+
+mortgage:
+  rate_30yr_fixed: 0.0650      # VERIFY: Freddie Mac PMMS; jumbo quotes differ
+  jumbo_rate_spread: 0.0000    # added to the rate above the conforming limit
+  conforming_limit: 832750     # VERIFY: FHFA limit for Harris County, purchase year
+  term_years: 30
+  scenarios:                   # every listing is priced under each of these
+    - {id: conventional_20, down_pct: 0.20, pmi: false}
+    - {id: conventional_10, down_pct: 0.10, pmi: true}
+    - {id: physician_0,     down_pct: 0.00, pmi: false, rate_spread: 0.0025}
+  pmi_annual_pct: 0.005
+
+property_tax:
+  # Texas has no state income tax; property tax is the dominant ownership cost.
+  # Total rate = school district + county + city + special districts. VERIFY at
+  # HCAD (hcad.org) per jurisdiction for the current tax year.
+  rate_by_area:
+    bellaire: 0.0195           # VERIFY: HISD + Harris Co. + City of Bellaire
+    memorial: 0.0210           # VERIFY: SBISD + Harris Co. + City of Houston / village
+  homestead_exemption_school: 140000   # VERIFY: current Texas school homestead exemption
+  homestead_cap_annual: 0.10   # appraisal cap on a homesteaded property
+  # Purchase resets the appraisal toward sale price, so year-1 tax is modeled
+  # on purchase price, not the seller's capped value shown on the listing.
+
+insurance:
+  homeowners_pct_of_value: 0.0085      # VERIFY with a quote; Houston wind/hail is costly
+  flood_annual_by_zone:                # VERIFY with a quote per property
+    X: 900
+    X_shaded: 1800                     # 500-year floodplain
+    AE: 4500                           # 100-year floodplain
+    floodway: null                     # treated as a disqualifier
+
+ownership:
+  maintenance_pct_of_value: 0.010
+  closing_cost_buy_pct: 0.020          # buyer side, excluding prepaid escrow
+  closing_cost_sell_pct: 0.065         # commissions + title + fees on exit
+  home_appreciation: 0.035             # long-run nominal
+  hoa_monthly_default: 0
+
+renting:
+  rent_growth: 0.035
+  renters_insurance_annual: 400
+  # Used when no comparable rental is on the market for a listing's zone/size.
+  fallback_price_to_annual_rent: 22
+
+investing:
+  return_nominal: 0.065                # opportunity cost on down payment + monthly savings
+  inflation: 0.025
+
+tax:
+  # Mortgage interest is deductible on the first $750k of acquisition debt,
+  # SALT is capped. VERIFY both for the purchase tax year before relying on them.
+  mortgage_interest_debt_cap: 750000
+  salt_cap: 40000
+
+horizon_years: 12                      # user expects to stay 10+ years
+sensitivity:
+  horizons: [5, 7, 10, 12, 15]
+  appreciation: [0.02, 0.035, 0.05]
+  rate: [-0.01, 0.0, 0.01]             # deltas on mortgage.rate_30yr_fixed

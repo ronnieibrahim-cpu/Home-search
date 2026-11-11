@@ -1,0 +1,81 @@
+# What to look for. Safe to commit: nothing personal in here.
+# Items marked VERIFY are seed values the implementer must confirm against the
+# district's own source before the school filter is trusted.
+
+purchase:
+  target_year: 2027
+  price_min: 800000
+  price_max: 1200000
+  # Listings up to this far over budget still appear, flagged "stretch",
+  # because list prices in these areas are routinely negotiated or reduced.
+  stretch_pct: 0.05
+
+home:
+  beds_min: 4
+  baths_min: 3
+  sqft_min: 2800
+  lot_sqft_min: 0
+  year_built_min: 0          # 0 = no floor; lot-value teardowns are flagged, not dropped
+  property_types: [single_family]
+  exclude_keywords: ["55+", "auction", "fractional"]
+
+rent:
+  # Rentals are tracked for two reasons: as a real alternative, and to give
+  # each for-sale listing a rent-equivalent for the rent-vs-buy model.
+  enabled: true
+  monthly_min: 3500
+  monthly_max: 8000
+
+areas:
+  - id: bellaire
+    name: Bellaire
+    district: HISD
+    zips: ["77401"]
+    # Bellaire HS zone extends beyond the City of Bellaire. These are searched
+    # but only kept when the boundary check confirms the Bellaire HS zone.
+    fringe_zips: ["77025", "77096", "77081"]
+    target_schools:
+      high: ["Bellaire High School"]
+      middle: ["Pin Oak Middle School", "Pershing Middle School"]        # VERIFY
+      elementary: ["Horn Elementary", "Condit Elementary", "Lovett Elementary"]  # VERIFY
+
+  - id: memorial
+    name: Spring Branch / Memorial
+    district: SBISD
+    zips: ["77024", "77079", "77055", "77043", "77080"]
+    fringe_zips: []
+    target_schools:
+      high: ["Memorial High School", "Stratford High School"]
+      preferred_high: "Memorial High School"
+      middle: ["Memorial Middle School", "Spring Branch Middle School"]  # VERIFY
+      elementary:                                                        # VERIFY
+        - Bunker Hill Elementary
+        - Frostwood Elementary
+        - Hunters Creek Elementary
+        - Memorial Drive Elementary
+        - Wilchester Elementary
+        - Rummel Creek Elementary
+
+schools:
+  # A listing must have a confirmed target HIGH school to be a candidate.
+  # "unverified" zoning (no boundary match) is shown in a separate section,
+  # never silently promoted.
+  require_verified_high: true
+  min_rating: 8              # 1-10 scale from the ratings source, when available
+
+scoring:
+  # Weights sum to 1.0. See docs/ARCHITECTURE.md "Scoring".
+  weights:
+    schools: 0.30
+    value: 0.25              # $/sqft vs. the zone's trailing median, price cuts, DOM
+    flood: 0.20
+    fit: 0.15                # beds / baths / sqft / lot vs. the criteria above
+    carrying_cost: 0.10      # all-in monthly cost vs. profile comfort level
+  hot_alert_threshold: 85    # 0-100; at or above this, email immediately
+  digest_min_score: 60
+  digest_max_items: 15
+
+schedule:
+  timezone: America/Chicago
+  scan: daily                # collect + score; sends only hot alerts
+  digest_day: sunday
