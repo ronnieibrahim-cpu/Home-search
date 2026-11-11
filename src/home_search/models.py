@@ -98,7 +98,7 @@ class LoanCost(BaseModel):
 
 
 class Affordability(BaseModel):
-    cash_needed: float                # down payment + closing + reserves kept
+    cash_needed: float                # down payment + closing costs
     cash_available_at_purchase: float
     dti_back_end: float
     plan_basis_monthly: float          # P&I + tax + the profile's combined ins/maint figure

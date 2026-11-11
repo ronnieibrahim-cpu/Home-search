@@ -127,7 +127,7 @@ fields onto `X`, `X_shaded`, `AE`, `floodway`.
 Done when: mapping is unit-tested from recorded JSON responses; keyword notes
 are tested; one `network` test hits the live service.
 
-## [ ] WP7  Costs and affordability
+## [x] WP7  Costs and affordability
 Files: `finance/costs.py`, `finance/affordability.py`, `tests/test_costs.py`, `tests/test_affordability.py`
 
 Implement per `docs/FINANCE_MODEL.md` §1–2. The worked example there is a

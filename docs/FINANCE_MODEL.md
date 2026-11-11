@@ -44,13 +44,19 @@ The school share of 0.50 is a placeholder for the example only.
 
 Profile fields are named as in `config/profile.example.yaml`.
 
-**The household's plan scenario.** Besides the scenarios in `assumptions.yaml`,
-build one with id `plan` from the profile: `financing.down_payment_pct`,
-`financing.rate_assumption` (else the assumptions rate), no PMI. It is listed
-first and is the one the flags below are evaluated on. The physician-loan
-scenario is priced only when `financing.physician_loan_programs` is set.
-Profile values override assumptions wherever both exist (closing cost share,
-rate, modeled tax rate, price band, bed and bath minimums).
+**The household's plan scenarios.** Besides the scenarios in `assumptions.yaml`,
+build two from the profile, both with `financing.down_payment_pct` and no PMI:
+`plan`, at the household's planning rate `financing.rate_assumption` (carried
+as `rate_spread = rate_assumption − rate_30yr_fixed`, so it reconciles with the
+household workbook), and `plan_market`, at today's market rate
+(`rate_spread = 0`). When the profile sets no rate the two are identical and
+only `plan` is built. They are listed first, `plan` then `plan_market`; the
+flags below are evaluated on each scenario's own cost. The assumptions'
+scenarios are always priced at the market rate; the profile's rate never
+replaces `rate_30yr_fixed`. The physician-loan scenario is priced only when
+`financing.physician_loan_programs` is set. Other profile values override
+assumptions wherever both exist (closing cost share, modeled tax rate, price
+band, bed and bath minimums).
 
 **Cash.**
 - `months = months from meta.generated to the target close date`
