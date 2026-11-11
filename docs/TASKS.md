@@ -74,7 +74,7 @@ Done when: fixture pages parse to `Listing` objects with HAR's MLS number as
 cross-check; a challenge page raises `SourceUnavailable`; `--sources` filtering
 exists on the CLI so this can be run locally on its own.
 
-## [ ] WP3c  Browser inbox source
+## [x] WP3c  Browser inbox source
 Files: `sources/browser_inbox.py`, `tests/test_browser_inbox.py`, `tests/fixtures/inbox_*.json`,
 `docs/HAR_BROWSER_TASK.md` (keep format in sync)
 

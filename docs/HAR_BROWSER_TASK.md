@@ -42,6 +42,22 @@ you on a schedule and hand the results to the app.
 are `null`. `har_schools` is kept as a cross-check only; the boundary polygon
 still decides zoning.
 
+How the app reads it (`sources/browser_inbox.py`, source name `har_browser`):
+
+- Required per record: `address`, `price`, `kind` and a `url` on har.com (or a
+  subdomain of it). Numbers may be JSON numbers or strings like `"$1,050,000"`.
+  `status` is HAR's wording (`active`, `option pending`, `sold`, ...); `null`
+  means active. A missing `source_id` falls back to the URL.
+- A record that is not an object, misses a required field, has a URL off
+  har.com, or fails validation is skipped with a warning in the digest footer;
+  the rest of the file is still used.
+- A file that is not a JSON array (including truncated JSON) is skipped whole
+  with a warning and left in `data/inbox/` to inspect. Every other file moves
+  to `data/inbox/done/` once read.
+- The file's modification time is taken as when the listings were seen.
+- Records outside the search zips or price band are dropped, as for the other
+  sources.
+
 ## Limits
 
 This is you browsing your own account through an assistant, at a person's pace
