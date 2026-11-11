@@ -33,27 +33,50 @@ areas:
     zips: ["77401"]
     # Bellaire HS zone extends beyond the City of Bellaire. These are searched
     # but only kept when the boundary check confirms the Bellaire HS zone.
-    fringe_zips: ["77025", "77096", "77081"]
+    # 77025: Knollwood, Braeswood Place west of Stella Link / south of Brays Bayou.
+    # 77096: Meyerland. 77081: Maplewood east of Hillcroft. 77035 (added):
+    # Willow Meadows north of W. Bellfort. Each also has homes zoned elsewhere
+    # (Lamar, Westbury, Sharpstown). https://en.wikipedia.org/wiki/Braeswood_Place,_Houston ; https://en.wikipedia.org/wiki/Willow_Meadows,_Houston
+    fringe_zips: ["77025", "77096", "77081", "77035"]   # https://en.wikipedia.org/wiki/Bellaire_High_School_(Texas)
     target_schools:
       high: ["Bellaire High School"]
-      middle: ["Pin Oak Middle School", "Pershing Middle School"]        # VERIFY
-      elementary: ["Horn Elementary", "Condit Elementary", "Lovett Elementary"]  # VERIFY
+      # Pershing also feeds Lamar HS (Braeswood east of Stella Link).
+      middle: ["Pin Oak Middle School", "Pershing Middle School", "Jane Long Academy"]  # https://en.wikipedia.org/wiki/Bellaire_High_School_(Texas)
+      elementary:   # https://www.schooldigger.com/go/TX/schools/2364002397/school.aspx
+        - Braeburn Elementary
+        - Condit Elementary
+        - Herod Elementary
+        - Horn Elementary
+        - Kolter Elementary
+        - Longfellow Elementary
+        - Lovett Elementary
 
   - id: memorial
     name: Spring Branch / Memorial
     district: SBISD
-    zips: ["77024", "77079", "77055", "77043", "77080"]
-    fringe_zips: []
+    # 77024: Memorial HS, the Villages, Bunker Hill/Frostwood/Hunters Creek/
+    # Memorial Drive Elementary. 77055: Valley Oaks Elementary (Memorial HS),
+    # Spring Valley and Hilshire Villages.
+    zips: ["77024", "77055"]   # https://www.schooldigger.com/go/TX/schools/4110004701/school.aspx
+    # Memorial HS coverage not confirmed: 77079 sources conflict (mostly
+    # Stratford); 77043 and 77080 are north of I-10, mostly Spring Woods /
+    # Northbrook. Kept as boundary-checked fringe until a boundary map is read.
+    fringe_zips: ["77079", "77043", "77080"]   # VERIFY against the SBISD boundary map
     target_schools:
       # Memorial HS only. Homes zoned to Stratford or any other SBISD high
       # school are excluded, even in these zips.
       high: ["Memorial High School"]
-      middle: ["Memorial Middle School", "Spring Branch Middle School"]  # VERIFY
-      elementary:                                                        # VERIFY
+      # Both feed Memorial HS but also another high school (Memorial MS ->
+      # Stratford, Spring Branch MS -> Spring Woods), so a middle school match
+      # never confirms the high school; only the high school boundary does.
+      # https://sbisdcpta.org/product/stratford-feeder-pattern-ptas/
+      middle: ["Memorial Middle School", "Spring Branch Middle School"]
+      elementary:   # https://www.schooldigger.com/go/TX/schools/4110004680/school.aspx
         - Bunker Hill Elementary
         - Frostwood Elementary
         - Hunters Creek Elementary
         - Memorial Drive Elementary
+        - Valley Oaks Elementary
 
 schools:
   # A listing must have a confirmed target HIGH school to be a candidate.

@@ -3,12 +3,12 @@
 # marked VERIFY against the cited authority, and record the date checked in
 # `as_of`. The digest footer prints `as_of` so stale assumptions are visible.
 
-as_of: null                    # set to YYYY-MM-DD when verified
+as_of: 2026-11-11
 
 mortgage:
-  rate_30yr_fixed: 0.0650      # VERIFY: Freddie Mac PMMS; jumbo quotes differ
+  rate_30yr_fixed: 0.0718      # PMMS week of 2026-11-05; jumbo quotes differ. https://www.rismedia.com/2026/11/05/mortgage-rates-edge-down-third-straight-week/
   jumbo_rate_spread: 0.0000    # added to the rate above the conforming limit
-  conforming_limit: 832750     # VERIFY: FHFA limit for Harris County, purchase year
+  conforming_limit: 832750     # 2026 baseline (Harris Co. is not high-cost); 2027 not yet announced, update late Nov 2026. https://capitalmarkets.fanniemae.com/mortgage-backed-securities/fhfa-announces-conforming-loan-limit-values-2026
   term_years: 30
   scenarios:                   # every listing is priced under each of these
     - {id: conventional_20, down_pct: 0.20, pmi: false}
@@ -18,19 +18,35 @@ mortgage:
 
 property_tax:
   # Texas has no state income tax; property tax is the dominant ownership cost.
-  # Total rate = school district + county + city + special districts. VERIFY at
-  # HCAD (hcad.org) per jurisdiction for the current tax year.
+  # Total rate = school district + county + city + special districts, tax year
+  # 2026. Harris Co. 0.6715 = county 0.4175 + flood control 0.05266 + port
+  # 0.00603 + hospital 0.19528 (https://abc13.com/post/harris-county-commissioners-approve-largest-tax-rates-recent-history/19844818/).
+  # HCDE 0.004798 and HCC 0.098802 are the latest published (2025) rates; their
+  # 2026 rates were not found. HCC levies in HISD territory; SBISD is only in
+  # HCC's service area, so memorial carries no HCC rate.
+  # Memorial Villages: the village rate (2025: Hunters Creek 0.2052, Piney Point
+  # 0.2551, Bunker Hill 0.2710 [2026, unchanged], Hedwig 0.3363, Spring Valley
+  # 0.3950, Hilshire 0.5292) replaces City of Houston 0.5192, giving a total of
+  # about 0.0194-0.0226. https://memorialvillages.com/memorial-villages-guide/
   rate_by_area:
-    bellaire: 0.0195           # VERIFY: HISD + Harris Co. + City of Bellaire
-    memorial: 0.0210           # VERIFY: SBISD + Harris Co. + City of Houston / village
-  homestead_exemption_school: 140000   # VERIFY: current Texas school homestead exemption
-  homestead_cap_annual: 0.10   # appraisal cap on a homesteaded property
+    # HISD 0.8421 + Harris Co. 0.6715 + Bellaire 0.4174 + HCDE + HCC = 2.0346%
+    bellaire: 0.0203           # https://www.houstonisd.org/our-district/budget-financial-planning/tax-information ; https://communityimpact.com/bellaire-meyerland-west-university/government/bellaire-officials-maintain-prior-year-s-tax-rate-for-fy-2026-27/
+    # SBISD 1.0563 + Harris Co. 0.6715 + City of Houston 0.5192 + HCDE = 2.2518% (Houston portion; villages are lower, see above)
+    memorial: 0.0225           # https://www.springbranchisd.com/article/3159600/ ; https://communityimpact.com/heights-river-oaks-montrose/government/houston-approves-unchanged-tax-rate-for-2026/
+  school_share_by_area:
+    bellaire: 0.41             # 0.8421 / 2.0346
+    memorial: 0.47             # 1.0563 / 2.2518
+  homestead_exemption_school: 140000   # Prop 13 (Nov 2025), in force for tax year 2026. https://news.bloombergtax.com/daily-tax-report-state/texas-voters-approve-constitutional-amendment-authorizing-increased-elderly-disabled-property-tax-exemption-1
+  homestead_cap_annual: 0.10   # Tax Code 23.23; starts the year after the first homestead year. https://comptroller.texas.gov/taxes/property-tax/appraisal-tax-limitations.php
   # Purchase resets the appraisal toward sale price, so year-1 tax is modeled
   # on purchase price, not the seller's capped value shown on the listing.
 
 insurance:
-  homeowners_pct_of_value: 0.0085      # VERIFY with a quote; Houston wind/hail is costly
-  flood_annual_by_zone:                # VERIFY with a quote per property
+  homeowners_pct_of_value: 0.0085      # VERIFY with a quote: no source found for ~$1M Houston homes (published averages are for $300k dwelling coverage)
+  # Benchmarks, not quotes: Houston NFIP medians X ~$600-1,400, AE ~$2,300
+  # (range to ~$4,300). Premiums are per property under Risk Rating 2.0, so
+  # quote each address. https://www.floodinsuranceguru.com/houston-flood-insurance-2026-maapnext-data-rate-analysis
+  flood_annual_by_zone:
     X: 900
     X_shaded: 1800                     # 500-year floodplain
     AE: 4500                           # 100-year floodplain
@@ -54,10 +70,11 @@ investing:
   inflation: 0.025
 
 tax:
-  # Mortgage interest is deductible on the first $750k of acquisition debt,
-  # SALT is capped. VERIFY both for the purchase tax year before relying on them.
-  mortgage_interest_debt_cap: 750000
-  salt_cap: 40000
+  # Values for tax year 2027 under the 2025 reconciliation act (OBBBA).
+  # The SALT cap phases down toward $10,000 above ~$500k MAGI (indexed); that
+  # phase-down is not modeled here. The cap reverts to $10,000 in 2030.
+  mortgage_interest_debt_cap: 750000   # made permanent. https://www.foley.com/insights/publications/2025/07/trump-administration-passes-the-one-big-beautiful-bill-act/
+  salt_cap: 40804                      # $40,000 (2025) +1%/yr: 40,400 (2026), 40,804 (2027). https://www.hrblock.com/tax-center/irs/tax-law-and-policy/one-big-beautiful-bill-salt-deduction/
 
 horizon_years: 12                      # user expects to stay 10+ years
 sensitivity:

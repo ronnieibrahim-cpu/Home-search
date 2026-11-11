@@ -128,6 +128,9 @@ class Mortgage(_Strict):
 
 class PropertyTax(_Strict):
     rate_by_area: dict[str, float]
+    # School district's fraction of the total rate per area; the homestead
+    # exemption reduces only this share (docs/FINANCE_MODEL.md §1).
+    school_share_by_area: dict[str, float]
     homestead_exemption_school: int = 0
     homestead_cap_annual: float = 0.10
 

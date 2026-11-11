@@ -21,6 +21,7 @@ def test_assumptions_load_and_cover_every_area():
     cfg, a = config.load_search(), config.load_assumptions()
     for area in cfg.areas:
         assert area.id in a.property_tax.rate_by_area
+        assert 0 < a.property_tax.school_share_by_area[area.id] < 1
     assert a.horizon_years >= 10
 
 

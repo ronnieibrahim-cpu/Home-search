@@ -21,6 +21,12 @@ elementary → middle → high feeder patterns and correct the lists. Memorial H
 the only SBISD target: remove any elementary or middle school that feeds
 Stratford or another high school, and drop any zip with no Memorial HS coverage.
 
+Status 2026-11-11: first pass done from secondary sources (official hosts were
+blocked by the session network). Still open: homeowners insurance share (needs
+a quote), SBISD fringe zips 77079 / 77043 / 77080 (settled by the WP5 boundary
+file), and a re-check of tax rates against HCAD and of the 2027 conforming
+limit once FHFA announces it.
+
 Done when: no `VERIFY` comments remain, each changed value has its source URL in
 a trailing comment, `pytest` passes.
 
