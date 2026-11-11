@@ -1,5 +1,4 @@
-# --- PRIVATE: this repo is public. None of these may ever be committed. ---
-config/profile.yaml
+# --- Never commit: credentials, rendered emails, raw mail. ---
 .env
 out/
 *.eml

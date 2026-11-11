@@ -161,3 +161,16 @@ cron). Walk the whole setup once on a clean clone.
 
 Done when: a manual `workflow_dispatch` run completes and the user receives a
 real digest.
+
+---
+
+## Owner action items (need your computer or accounts)
+
+- [ ] **HAR from your PC.** Clone the repo, sign in to har.com in Chrome, save the
+      searches, and run the capture in `docs/HAR_BROWSER_TASK.md` once by hand.
+      Save two or three raw result pages and one alert email so the HAR parsers
+      (WP3b, WP3c, WP4) can be built against real samples. Then schedule it.
+- [ ] HAR and Redfin saved-search email alerts, with a Gmail filter applying the
+      label `home-search`. Wait for WP1 to confirm the zip list.
+- [ ] Gmail app password; GitHub secrets `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `DIGEST_TO`.
+- [ ] Merge to `main` when WP11 is ready, so scheduled runs can fire.

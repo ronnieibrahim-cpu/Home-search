@@ -1,0 +1,63 @@
+# Household planning numbers, committed at the owner's request so the project
+# can be iterated from any device. From home_search_budget.yaml, 2026-11-11.
+meta:
+  generated: 2026-11-11
+  location: {metro: "Houston, TX", county: Harris, reference_zip: "77055"}
+  target_close: summer 2027
+  target_close_date: 2027-06-15
+  title_at_closing: Texas community property
+search:
+  price_min: 800000
+  price_max: 1200000
+  planning_price: 1100000
+  property_type: single_family
+  school_preference: public
+  bedrooms_min: null
+  bathrooms_min: null
+income:
+  user_base_salary_annual: 650000
+  user_overtime_reliable_floor_annual: 15000
+  spouse_1099_income_annual: 20000
+  gross_monthly_for_lender: 54167
+  net_take_home_monthly_post_home: 37739
+cash_for_purchase:
+  source: high-yield savings
+  balance: 186000
+  monthly_addition: 7000
+  keep_after_closing: 30000
+other_assets:
+  taxable_brokerage_vanguard: 131000
+  roth_ira_user_vanguard: 144000
+  roth_ira_spouse: 144000
+  401k_user: 144000
+  solo_401k_spouse_fidelity: 30000
+financing:
+  loan_type: 30-year fixed
+  down_payment_pct: 0.15
+  closing_costs_pct: 0.025
+  rate_assumption: 0.065
+  rate_range: [0.055, 0.075]
+  conforming_loan_limit_2026: 832750
+  physician_loan_programs: consider
+  prepay_mortgage: false
+carrying_costs:
+  property_tax_rate_modeled: 0.021
+  property_tax_rate_effective_est: 0.0185
+  insurance_plus_maintenance_annual: 15000
+  umbrella_policy: {limit: 5000000, monthly_cost_est: 50}
+  hoa_monthly: null
+  total_housing_carry_target_monthly: [9500, 11500]
+monthly_budget_after_purchase:
+  mortgage_principal_interest: 5910
+  property_tax_insurance_maintenance: 3167
+  total_housing: 9077
+  non_housing_living_costs: 10448
+  savings_and_investing: 14125
+  leftover_buffer: 4090
+  hard_ceiling_total_housing: 13167
+household:
+  children_ages: [3, 0]
+  marginal_federal_rate: null
+  monthly_non_housing_debt: 0
+  current_rent_monthly: 3600
+  flood_tolerance: x_only

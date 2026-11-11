@@ -26,9 +26,10 @@ home-search scan --dry-run
 
 ## Rules
 
-- **This repo is public.** Never commit `config/profile.yaml`, `.env`, anything
-  under `out/`, real email addresses, or unscrubbed `.eml` fixtures. Never print
-  profile values. See "Privacy rules" in `docs/ARCHITECTURE.md`.
+- **This repo is public.** The owner has chosen to commit `config/profile.yaml`
+  (planning numbers). Still never commit `.env`, credentials, anything under
+  `out/`, real email addresses, names, account numbers, or unscrubbed `.eml`
+  fixtures. See "Privacy rules" in `docs/ARCHITECTURE.md`.
 - Stub signatures and `models.py` are the contract between packages. Propose a
   change to the orchestrator instead of editing them inside a package.
 - No number in the finance code: every rate, limit and percentage lives in

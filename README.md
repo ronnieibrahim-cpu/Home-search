@@ -46,9 +46,9 @@ home-search doctor
 
 ## Your private numbers
 
-This repository is public. Your finances go in `config/profile.yaml`, which is
-gitignored, and in a GitHub secret named `PROFILE_YAML` for scheduled runs.
-They are never committed, logged, or stored in the database.
+Planning numbers live in `config/profile.yaml`, committed so the project can be
+worked on from any device. Credentials are never committed: they go in `.env`
+locally and GitHub secrets for scheduled runs.
 
 ## Caveats
 

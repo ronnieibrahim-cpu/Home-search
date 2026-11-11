@@ -43,9 +43,9 @@ def test_profile_from_env_wins(monkeypatch):
     assert config.load_profile().is_filled_in
 
 
-def test_real_profile_is_gitignored():
+def test_secrets_and_output_are_gitignored():
     ignored = (Path(config.ROOT) / ".gitignore").read_text()
-    assert "config/profile.yaml" in ignored and "out/" in ignored
+    assert ".env" in ignored and "out/" in ignored
 
 
 def test_doctor_runs(capsys):

@@ -61,7 +61,9 @@ the area's land value), `jumbo`, `flood_500yr`.
 
 ## Privacy rules (the repo is public)
 
-1. The profile never enters the repo, the database, logs, or CI output.
-2. Rendered emails go to SMTP or `out/` (gitignored) only.
-3. Test fixtures use synthetic profiles and scrubbed emails.
-4. CI must not echo `PROFILE_YAML`; errors parsing it print the exception type only.
+1. `config/profile.yaml` is committed by the owner's choice. `PROFILE_YAML`, if
+   set, still overrides it.
+2. Credentials live only in `.env` or GitHub secrets.
+3. Rendered emails go to SMTP or `out/` (gitignored) only.
+4. No names, street address of the household, account numbers or email
+   addresses anywhere in the repo; email fixtures are scrubbed.
