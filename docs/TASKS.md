@@ -107,7 +107,11 @@ high-school zone; an address in a target zip but zoned to a non-target high
 school; a listing with no coordinates → `UNKNOWN`; a description claim without
 polygon match → `LISTING_CLAIM`.
 
-## [ ] WP6  Flood
+## [x] WP6  Flood
+Built against FEMA's documented response shape: hazards.fema.gov was blocked
+from the build session. Fixtures and zone strings need one live check
+(`pytest -m network`) from a machine with access.
+
 Files: `enrich/flood.py`, `tests/test_flood.py`
 
 FEMA NFHL query with on-disk cache and a 10 s timeout; on failure return
@@ -176,6 +180,8 @@ real digest.
       searches, and run the capture in `docs/HAR_BROWSER_TASK.md` once by hand.
       Save two or three raw result pages and one alert email so the HAR parsers
       (WP3b, WP3c, WP4) can be built against real samples. Then schedule it.
+- [ ] On that same machine run `python -m pytest -m network` once and report the
+      result, so the FEMA flood lookup and Redfin request are checked live.
 - [ ] HAR and Redfin saved-search email alerts, with a Gmail filter applying the
       label `home-search`. Wait for WP1 to confirm the zip list.
 - [ ] Gmail app password; GitHub secrets `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `DIGEST_TO`.

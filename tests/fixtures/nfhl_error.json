@@ -1,0 +1,8 @@
+{
+  "_fixture_note": "Synthesized from the documented NFHL layer 28 (S_FLD_HAZ_AR) query response shape; the live service was not reachable when this fixture was made. Replace with a recorded response.",
+  "error": {
+    "code": 400,
+    "message": "Unable to complete operation.",
+    "details": []
+  }
+}

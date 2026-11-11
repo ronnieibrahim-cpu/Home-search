@@ -1,0 +1,46 @@
+{
+  "_fixture_note": "Synthesized from the documented NFHL layer 28 (S_FLD_HAZ_AR) query response shape; the live service was not reachable when this fixture was made. Replace with a recorded response.",
+  "displayFieldName": "DFIRM_ID",
+  "fieldAliases": {
+    "DFIRM_ID": "DFIRM_ID",
+    "FLD_ZONE": "FLD_ZONE",
+    "ZONE_SUBTY": "ZONE_SUBTY",
+    "SFHA_TF": "SFHA_TF"
+  },
+  "fields": [
+    {
+      "name": "DFIRM_ID",
+      "type": "esriFieldTypeString",
+      "alias": "DFIRM_ID",
+      "length": 6
+    },
+    {
+      "name": "FLD_ZONE",
+      "type": "esriFieldTypeString",
+      "alias": "FLD_ZONE",
+      "length": 17
+    },
+    {
+      "name": "ZONE_SUBTY",
+      "type": "esriFieldTypeString",
+      "alias": "ZONE_SUBTY",
+      "length": 72
+    },
+    {
+      "name": "SFHA_TF",
+      "type": "esriFieldTypeString",
+      "alias": "SFHA_TF",
+      "length": 1
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "DFIRM_ID": "48201C",
+        "FLD_ZONE": "X",
+        "ZONE_SUBTY": "AREA WITH REDUCED FLOOD RISK DUE TO LEVEE",
+        "SFHA_TF": "F"
+      }
+    }
+  ]
+}
