@@ -1,37 +1,54 @@
-# Your household's numbers. Copy to config/profile.yaml (gitignored) and fill in.
+# Your household's numbers. Copy to config/profile.yaml (gitignored) and fill in,
+# or drop in the planning export (home_search_budget.yaml) unchanged: this is the
+# same shape, and keys the app does not know are ignored.
 # For GitHub Actions, paste the finished file into a repository secret named
-# PROFILE_YAML. THIS REPO IS PUBLIC: never commit the real file, and never
-# print these values in logs or commit a rendered digest.
+# PROFILE_YAML. THIS REPO IS PUBLIC: never commit the real file.
 
-household:
-  adults: 2
-  children_ages: []                # drives which school levels matter and when
+meta:
+  generated: null                  # YYYY-MM-DD the balances below were read
+  target_close_date: null          # YYYY-MM-DD; default June 1 of the purchase year
+
+search:                            # optional; overrides config/search.yaml when set
+  price_min: null
+  price_max: null
+  planning_price: null
+  bedrooms_min: null
+  bathrooms_min: null
 
 income:
-  gross_annual: 0
-  expected_gross_annual_2027: 0    # if a raise / job change is expected
-  marginal_federal_rate: 0.0
-  filing_status: married_joint
+  gross_monthly_for_lender: 0      # income a lender will count
+  net_take_home_monthly_post_home: 0
 
-savings:
-  liquid_for_down_payment: 0       # cash + taxable you'd actually deploy
-  monthly_savings_rate: 0          # added to the above each month until purchase
-  emergency_fund_months_to_keep: 6
-  retirement_balances: 0           # context only; never counted as down payment
+cash_for_purchase:
+  balance: 0
+  monthly_addition: 0              # saved each month until closing
+  keep_after_closing: 0            # emergency buffer the app never spends
 
-debts:
-  monthly_non_housing: 0           # student loans, auto, etc.
-  student_loan_balance: 0
+other_assets: {}                   # name: balance. Counted as lender reserves only.
 
-current_housing:
-  monthly_rent_or_payment: 0
-  city: ""
-  lease_end: null                  # YYYY-MM-DD
+financing:
+  down_payment_pct: 0.20
+  closing_costs_pct: null
+  rate_assumption: null
+  rate_range: []                   # [low, high] bracket shown in the digest
+  physician_loan_programs: null    # "consider" to price that scenario
 
-preferences:
-  max_comfortable_monthly_housing: 0   # all-in PITI + insurance + HOA + maintenance
-  max_dti_back_end: 0.36               # your own ceiling, not the lender's
-  physician_loan_eligible: false
-  commute_anchors: []                  # e.g. [{name: "Work", address: "..."}]
+carrying_costs:
+  property_tax_rate_modeled: null
+  insurance_plus_maintenance_annual: null
+  total_housing_carry_target_monthly: []   # [comfortable, flag-above]
+  hoa_monthly: null
+
+monthly_budget_after_purchase:
+  non_housing_living_costs: 0
+  savings_and_investing: 0
+  hard_ceiling_total_housing: null
+
+household:                         # optional extras, not in the planning export
+  children_ages: []
+  marginal_federal_rate: null      # needed for the mortgage-interest tax effect
+  monthly_non_housing_debt: 0
+  current_rent_monthly: null
+  flood_tolerance: x_only          # x_only | allow_500yr | allow_100yr
+  commute_anchors: []              # [{name: "Work", address: "..."}]
   max_commute_minutes: 30
-  flood_tolerance: x_only              # x_only | allow_500yr | allow_100yr

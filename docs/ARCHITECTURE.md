@@ -3,7 +3,8 @@
 ## Flow
 
 ```
-            ┌─ sources/redfin_csv ──┐
+            ┌─ sources/har_web ─────┐
+            ├─ sources/redfin_csv ──┤
 schedule ──▶│                       ├─▶ store.upsert ─▶ enrich/schools ─▶ enrich/flood
             └─ sources/email_alerts ┘        │                                  │
                                          ChangeEvents                           ▼
@@ -22,6 +23,10 @@ Two entry points share the flow: `scan` (daily, emails only hot alerts) and
 - **Sources are plugins.** Anything implementing `sources.base.Source` can be
   added (a paid API later, for instance) without touching the pipeline. Sources
   fail independently and outages are reported in the digest.
+- **HAR first.** HAR is the MLS's own site and the preferred source. It arrives
+  two ways: saved-search alert emails (always on, runs anywhere) and the public
+  results pages (run from the user's computer). When sources disagree on a
+  field, HAR wins. Redfin fills gaps and supplies rentals and coordinates.
 - **Zoning is verified geometrically.** Only a polygon hit sets `VERIFIED`.
   Zip code and listing text never do.
 - **Two config tiers.** `search.yaml` and `assumptions.yaml` are public.

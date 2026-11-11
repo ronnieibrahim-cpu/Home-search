@@ -12,7 +12,8 @@ from ..models import Affordability, LoanCost
 
 
 def cash_at(profile: Profile, when: date, a: Assumptions) -> float:
-    """Liquid savings projected to the purchase date, net of the emergency fund kept."""
+    """cash_for_purchase.balance grown by monthly_addition from meta.generated to
+    `when`, minus keep_after_closing. The buffer is never reduced to make a deal work."""
     raise NotImplementedError("WP7")
 
 

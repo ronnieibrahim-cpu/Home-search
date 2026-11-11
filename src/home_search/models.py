@@ -101,7 +101,9 @@ class Affordability(BaseModel):
     cash_needed: float                # down payment + closing + reserves kept
     cash_available_at_purchase: float
     dti_back_end: float
+    plan_basis_monthly: float          # P&I + tax + the profile's combined ins/maint figure
     within_comfort: bool
+    over_hard_ceiling: bool = False
     blockers: list[str] = []          # human-readable, shown in the digest
 
 

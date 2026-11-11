@@ -42,14 +42,41 @@ The school share of 0.50 is a placeholder for the example only.
 
 ## 2. Affordability (`finance/affordability.py`)
 
-- `cash_available_at_purchase = liquid_for_down_payment + monthly_savings_rate × months_until_purchase`,
-  with no investment growth assumed on money needed within two years.
-- `cash_needed = down_payment + P × closing_cost_buy_pct + emergency_fund_months_to_keep × total_monthly`.
-- `dti_back_end = (total_monthly − maintenance + debts.monthly_non_housing) / (gross_annual_at_purchase / 12)`.
-  Maintenance is excluded because lenders exclude it; it stays in the comfort test.
-- `within_comfort = total_monthly ≤ max_comfortable_monthly_housing and dti_back_end ≤ max_dti_back_end and cash_needed ≤ cash_available`.
-- Each failed test adds a sentence to `blockers` with the gap in dollars.
-- The physician-loan scenario is evaluated only when `physician_loan_eligible`.
+Profile fields are named as in `config/profile.example.yaml`.
+
+**The household's plan scenario.** Besides the scenarios in `assumptions.yaml`,
+build one with id `plan` from the profile: `financing.down_payment_pct`,
+`financing.rate_assumption` (else the assumptions rate), no PMI. It is listed
+first and is the one the flags below are evaluated on. The physician-loan
+scenario is priced only when `financing.physician_loan_programs` is set.
+Profile values override assumptions wherever both exist (closing cost share,
+rate, modeled tax rate, price band, bed and bath minimums).
+
+**Cash.**
+- `months = months from meta.generated to the target close date`
+- `usable_cash = cash_for_purchase.balance + monthly_addition × months − keep_after_closing`
+- `cash_needed = P × (down_payment_pct + closing_costs_pct)`
+- `other_assets` are reported as months of reserves (`sum / total_monthly`), never added to cash.
+
+**Two monthly figures, both shown.**
+- `total_monthly`: the itemized figure from §1 (insurance, flood and maintenance from the listing's value and zone).
+- `plan_basis_monthly`: `P&I + P × tax_rate / 12 + insurance_plus_maintenance_annual / 12`,
+  the household workbook's convention, so digest numbers reconcile with it.
+  Tax rate is the listing's actual rate when the source provides one, else
+  `carrying_costs.property_tax_rate_modeled`.
+
+Required test (synthetic profile, same convention): `P = 1,100,000`, 15% down,
+6.5%, tax 2.1%, combined 15,000/yr → P&I **5,909.84**, plan basis **9,084.84**.
+
+**Tests and flags.** Evaluated on the larger of the two monthly figures.
+- `over_carry_target`: above the upper value of `total_housing_carry_target_monthly`.
+- `over_hard_ceiling`: above `hard_ceiling_total_housing`. Disqualifies.
+- `cash_short`: `cash_needed > usable_cash`; the blocker states the gap in dollars
+  and the price at which it closes.
+- `jumbo`: loan above the conforming limit (at 15% down, price above limit / 0.85).
+- `dti_back_end = (total_monthly − maintenance + household.monthly_non_housing_debt) / income.gross_monthly_for_lender`.
+- `within_comfort`: none of the above cost or cash flags raised.
+- Rate bracket: the digest shows `plan` P&I at each end of `financing.rate_range`.
 
 ## 3. Rent vs buy (`finance/rent_vs_buy.py`)
 
@@ -66,9 +93,9 @@ pays rent (growing at `rent_growth`) plus renters insurance.
 **Leveling.** Whichever path is cheaper in a month invests the difference at
 `return_nominal`. This is what makes the comparison fair.
 
-**Tax.** Buyer's benefit is `marginal_federal_rate × max(0, itemized − standard_deduction)`
+**Tax.** Buyer's benefit is `household.marginal_federal_rate × max(0, itemized − standard_deduction)`
 where itemized = interest on debt up to `mortgage_interest_debt_cap`, plus
-property tax up to `salt_cap`. Skip entirely when no profile is loaded and say so.
+property tax up to `salt_cap`. Skip when no profile is loaded or the rate is unset, and say so.
 
 **Result.**
 `npv_buy_minus_rent = (buyer_net_worth_H − renter_net_worth_H) / (1 + inflation)^H`.

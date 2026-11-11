@@ -181,64 +181,97 @@ class Assumptions(_Strict):
 
 
 # --------------------------------------------------------------- profile.yaml
+# Shape follows the household's own planning export (home_search_budget.yaml)
+# so that file can be dropped in unchanged. Unknown keys are ignored; derived
+# tables in it (price_grid, projected balances) are recomputed, never trusted.
 
 
-class Household(_Strict):
-    adults: int = 2
-    children_ages: list[int] = []
+class _Loose(BaseModel):
+    model_config = ConfigDict(extra="ignore")
 
 
-class Income(_Strict):
-    gross_annual: float = 0
-    expected_gross_annual_2027: float = 0
-    marginal_federal_rate: float = 0
-    filing_status: str = "married_joint"
+class ProfileMeta(_Loose):
+    generated: date | None = None            # balances are as of this date
+    target_close_date: date | None = None    # default: June 1 of purchase.target_year
 
 
-class Savings(_Strict):
-    liquid_for_down_payment: float = 0
-    monthly_savings_rate: float = 0
-    emergency_fund_months_to_keep: int = 6
-    retirement_balances: float = 0
+class ProfileSearch(_Loose):
+    price_min: int | None = None             # when set, overrides search.yaml
+    price_max: int | None = None
+    planning_price: int | None = None
+    bedrooms_min: int | None = None
+    bathrooms_min: float | None = None
 
 
-class Debts(_Strict):
-    monthly_non_housing: float = 0
-    student_loan_balance: float = 0
+class Income(_Loose):
+    gross_monthly_for_lender: float = 0      # what DTI is measured against
+    net_take_home_monthly_post_home: float = 0
 
 
-class CurrentHousing(_Strict):
-    monthly_rent_or_payment: float = 0
-    city: str = ""
-    lease_end: date | None = None
+class CashForPurchase(_Loose):
+    balance: float = 0
+    monthly_addition: float = 0
+    keep_after_closing: float = 0            # emergency buffer; never spent on the house
 
 
-class CommuteAnchor(_Strict):
+class Financing(_Loose):
+    down_payment_pct: float = 0.20
+    closing_costs_pct: float | None = None   # overrides ownership.closing_cost_buy_pct
+    rate_assumption: float | None = None     # overrides mortgage.rate_30yr_fixed
+    rate_range: list[float] = []
+    physician_loan_programs: str | None = None   # "consider" enables that scenario
+
+
+class CarryingCosts(_Loose):
+    property_tax_rate_modeled: float | None = None   # used when a listing has no actual rate
+    insurance_plus_maintenance_annual: float | None = None   # the plan's combined figure
+    total_housing_carry_target_monthly: list[float] = []     # [comfortable, flag-above]
+    hoa_monthly: float | None = None
+
+
+class MonthlyBudget(_Loose):
+    non_housing_living_costs: float = 0
+    savings_and_investing: float = 0
+    hard_ceiling_total_housing: float | None = None
+
+
+class CommuteAnchor(_Loose):
     name: str
     address: str
 
 
-class Preferences(_Strict):
-    max_comfortable_monthly_housing: float = 0
-    max_dti_back_end: float = 0.36
-    physician_loan_eligible: bool = False
+class Household(_Loose):
+    """Not in the planning export; optional extras the app can use."""
+
+    children_ages: list[int] = []
+    marginal_federal_rate: float | None = None
+    monthly_non_housing_debt: float = 0
+    current_rent_monthly: float | None = None
+    flood_tolerance: Literal["x_only", "allow_500yr", "allow_100yr"] = "x_only"
     commute_anchors: list[CommuteAnchor] = []
     max_commute_minutes: int = 30
-    flood_tolerance: Literal["x_only", "allow_500yr", "allow_100yr"] = "x_only"
 
 
-class Profile(_Strict):
-    household: Household = Field(default_factory=Household)
+class Profile(_Loose):
+    meta: ProfileMeta = Field(default_factory=ProfileMeta)
+    search: ProfileSearch = Field(default_factory=ProfileSearch)
     income: Income = Field(default_factory=Income)
-    savings: Savings = Field(default_factory=Savings)
-    debts: Debts = Field(default_factory=Debts)
-    current_housing: CurrentHousing = Field(default_factory=CurrentHousing)
-    preferences: Preferences = Field(default_factory=Preferences)
+    cash_for_purchase: CashForPurchase = Field(default_factory=CashForPurchase)
+    other_assets: dict[str, float] = {}      # lender reserves; never down payment
+    financing: Financing = Field(default_factory=Financing)
+    carrying_costs: CarryingCosts = Field(default_factory=CarryingCosts)
+    monthly_budget_after_purchase: MonthlyBudget = Field(default_factory=MonthlyBudget)
+    household: Household = Field(default_factory=Household)
 
     @property
     def is_filled_in(self) -> bool:
         """False while the profile is still the all-zero template."""
-        return self.income.gross_annual > 0 and self.savings.liquid_for_down_payment > 0
+        return self.income.gross_monthly_for_lender > 0 and self.cash_for_purchase.balance > 0
+
+    @property
+    def carry_flag_above(self) -> float | None:
+        t = self.carrying_costs.total_housing_carry_target_monthly
+        return max(t) if t else None
 
 
 # -------------------------------------------------------------------- loaders

@@ -13,8 +13,8 @@ package by package from [`docs/TASKS.md`](docs/TASKS.md).
 
 ## What it will do
 
-1. **Collect** for-sale and rental listings from Redfin's CSV export and from
-   HAR / Redfin saved-search alert emails in your Gmail.
+1. **Collect** for-sale and rental listings from HAR (saved-search alert emails
+   and its public results pages), with Redfin's CSV export as a second source.
 2. **Verify school zoning** against district attendance-boundary polygons, so a
    listing's own (often wrong) school claims are never trusted.
 3. **Check flood risk** from FEMA flood maps and listing text.

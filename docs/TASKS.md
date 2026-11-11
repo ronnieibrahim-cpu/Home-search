@@ -5,7 +5,7 @@ tests, no edits outside the listed files unless the package says so. Signatures
 in the stubs are the contract; change one only by flagging it to the
 orchestrator first. Remove the `NotImplementedError` for what you implement.
 
-Order: WP1 → WP2 → (WP3, WP4, WP5, WP6, WP7 in any order) → WP8 → WP9 → WP10 → WP11.
+Order: WP1 → WP2 → (WP4, WP3b, WP3, WP5, WP6, WP7 in any order; HAR packages first) → WP8 → WP9 → WP10 → WP11.
 
 Status key: `[ ]` open, `[x]` done.
 
@@ -46,10 +46,27 @@ Done when: fixture parse yields correct `Listing` objects including lat/lon;
 403/429/HTML-instead-of-CSV all raise `SourceUnavailable`; a zip returning zero
 rows is distinguished from a block.
 
+## [ ] WP3b  HAR web source
+Files: `sources/har_web.py`, `tests/test_har_web.py`, `tests/fixtures/har_results_*.html`
+
+HAR is the preferred source. Follow the access rules in the module docstring
+exactly; they are not negotiable. First establish, with a single manual request,
+what a signed-out visitor's results page returns and whether the listing data is
+in the HTML or an embedded JSON blob. If the only way to get data is to defeat a
+challenge, stop and report: the package is then closed as "not feasible" and
+HAR coverage rests on WP4.
+
+Done when: fixture pages parse to `Listing` objects with HAR's MLS number as
+`source_id`, zoned-school names captured into `description` metadata for the
+cross-check; a challenge page raises `SourceUnavailable`; `--sources` filtering
+exists on the CLI so this can be run locally on its own.
+
 ## [ ] WP4  Alert-email source
 Files: `sources/email_alerts.py`, `sources/base.py` (`enabled_sources`),
 `tests/test_email_alerts.py`, `tests/fixtures/*.eml`, `docs/SETUP.md` (saved-search section)
 
+This is the always-on HAR path, so the HAR parser comes first and gets the most
+fixture coverage (new listing, price change, status change, multi-listing digest).
 IMAP to Gmail with the app password. Track the last-seen UID per label in the
 store's `meta` table (add it). Parsers must tolerate a template change by
 returning `[]` and logging a warning that reaches the digest footer, not by
@@ -90,7 +107,8 @@ required test case, to the dollar.
 Done when: amortization matches a reference value; jumbo detection flips at the
 conforming limit; homestead exemption applies to the school portion only; PMI
 appears only when the scenario says so; `max_price` is monotone in income and
-savings; tests use synthetic profiles only.
+savings; the `plan` scenario and both monthly figures match the §2 required
+test; the emergency buffer is never spent; tests use synthetic profiles only.
 
 ## [ ] WP8  Rent vs buy
 Files: `finance/rent_vs_buy.py`, `tests/test_rent_vs_buy.py`

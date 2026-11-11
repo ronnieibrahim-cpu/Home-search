@@ -39,7 +39,7 @@ def test_example_profile_is_valid_but_blank():
 
 
 def test_profile_from_env_wins(monkeypatch):
-    monkeypatch.setenv("PROFILE_YAML", "income: {gross_annual: 1}\nsavings: {liquid_for_down_payment: 1}")
+    monkeypatch.setenv("PROFILE_YAML", "income: {gross_monthly_for_lender: 1}\ncash_for_purchase: {balance: 1}\nprice_grid: []")
     assert config.load_profile().is_filled_in
 
 
