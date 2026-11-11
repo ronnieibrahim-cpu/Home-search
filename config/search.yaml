@@ -11,9 +11,9 @@ purchase:
   stretch_pct: 0.05
 
 home:
-  beds_min: 4
-  baths_min: 3
-  sqft_min: 2800
+  beds_min: 3
+  baths_min: 2.5
+  sqft_min: 2400
   lot_sqft_min: 0
   year_built_min: 0          # 0 = no floor; lot-value teardowns are flagged, not dropped
   property_types: [single_family]
@@ -45,16 +45,15 @@ areas:
     zips: ["77024", "77079", "77055", "77043", "77080"]
     fringe_zips: []
     target_schools:
-      high: ["Memorial High School", "Stratford High School"]
-      preferred_high: "Memorial High School"
+      # Memorial HS only. Homes zoned to Stratford or any other SBISD high
+      # school are excluded, even in these zips.
+      high: ["Memorial High School"]
       middle: ["Memorial Middle School", "Spring Branch Middle School"]  # VERIFY
       elementary:                                                        # VERIFY
         - Bunker Hill Elementary
         - Frostwood Elementary
         - Hunters Creek Elementary
         - Memorial Drive Elementary
-        - Wilchester Elementary
-        - Rummel Creek Elementary
 
 schools:
   # A listing must have a confirmed target HIGH school to be a candidate.

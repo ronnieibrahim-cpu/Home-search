@@ -17,8 +17,9 @@ Files: `config/assumptions.yaml`, `config/search.yaml`
 Research only, no code. Confirm every value marked `VERIFY` against its
 authority (FHFA, Freddie Mac PMMS, HCAD, Texas Comptroller, IRS, SBISD and HISD
 feeder-pattern pages) and set `as_of`. For schools, confirm the
-elementary → middle → high feeder patterns and correct the lists; a Memorial-area
-elementary that feeds Stratford rather than Memorial HS must be labelled so.
+elementary → middle → high feeder patterns and correct the lists. Memorial HS is
+the only SBISD target: remove any elementary or middle school that feeds
+Stratford or another high school, and drop any zip with no Memorial HS coverage.
 
 Done when: no `VERIFY` comments remain, each changed value has its source URL in
 a trailing comment, `pytest` passes.
