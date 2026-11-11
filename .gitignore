@@ -8,6 +8,7 @@ out/
 data/state.sqlite
 data/state.sqlite-*
 data/cache/
+data/inbox/
 
 # python
 __pycache__/

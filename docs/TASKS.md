@@ -5,7 +5,7 @@ tests, no edits outside the listed files unless the package says so. Signatures
 in the stubs are the contract; change one only by flagging it to the
 orchestrator first. Remove the `NotImplementedError` for what you implement.
 
-Order: WP1 → WP2 → (WP4, WP3b, WP3, WP5, WP6, WP7 in any order; HAR packages first) → WP8 → WP9 → WP10 → WP11.
+Order: WP1 → WP2 → (WP4, WP3c, WP3b, WP3, WP5, WP6, WP7 in any order; HAR packages first) → WP8 → WP9 → WP10 → WP11.
 
 Status key: `[ ]` open, `[x]` done.
 
@@ -61,6 +61,18 @@ Done when: fixture pages parse to `Listing` objects with HAR's MLS number as
 `source_id`, zoned-school names captured into `description` metadata for the
 cross-check; a challenge page raises `SourceUnavailable`; `--sources` filtering
 exists on the CLI so this can be run locally on its own.
+
+## [ ] WP3c  Browser inbox source
+Files: `sources/browser_inbox.py`, `tests/test_browser_inbox.py`, `tests/fixtures/inbox_*.json`,
+`docs/HAR_BROWSER_TASK.md` (keep format in sync)
+
+Ingest the JSON files described in `docs/HAR_BROWSER_TASK.md`. No network code.
+Add an optional `har_schools: dict[str, str] | None` to `Listing` (approved
+model change) and have WP5 use it for `LISTING_CLAIM`.
+
+Done when: a valid file ingests and moves to `done/`; malformed JSON, a
+non-har.com URL and a record missing address or price are each skipped with a
+warning that reaches the digest footer; an empty inbox returns `[]` without error.
 
 ## [ ] WP4  Alert-email source
 Files: `sources/email_alerts.py`, `sources/base.py` (`enabled_sources`),
