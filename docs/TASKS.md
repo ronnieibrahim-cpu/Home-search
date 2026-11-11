@@ -43,6 +43,12 @@ two-miss rule in `mark_missing`; alert de-duplication at the same price and
 re-alert after a price cut.
 
 ## [ ] WP3  Redfin CSV source
+Status 2026-11-11: built and tested against SYNTHETIC fixtures; redfin.com was
+blocked from the build session, so the request URL has never been tried. Open:
+whether `region_id` accepts a zip or needs Redfin's internal region id, whether
+a rentals CSV exists at all, and the real status / property-type strings.
+Settle with `pytest -m network` from an unblocked machine, then swap in real
+fixtures and tick this box.
 Files: `sources/redfin_csv.py`, `tests/test_redfin_csv.py`, `tests/fixtures/redfin_*.csv`
 
 Follow the politeness rules in the module docstring exactly. Save one real CSV
