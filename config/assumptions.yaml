@@ -63,7 +63,7 @@ renting:
   rent_growth: 0.035
   renters_insurance_annual: 400
   # Used when no comparable rental is on the market for a listing's zone/size.
-  fallback_price_to_annual_rent: 22
+  fallback_price_to_annual_rent: 22   # VERIFY against real rental comps; 22 likely understates rents for $1M homes in these zones
 
 investing:
   return_nominal: 0.065                # opportunity cost on down payment + monthly savings
@@ -71,12 +71,21 @@ investing:
 
 tax:
   # Values for tax year 2027 under the 2025 reconciliation act (OBBBA).
-  # The SALT cap phases down toward $10,000 above ~$500k MAGI (indexed); that
-  # phase-down is not modeled here. The cap reverts to $10,000 in 2030.
+  # The SALT cap phases down toward $10,000 above ~$500k MAGI (indexed) and
+  # reverts to $10,000 in 2030; both are modeled (salt_* fields below). Income
+  # is proxied by the profile's lender-counted gross income.
   mortgage_interest_debt_cap: 750000   # made permanent. https://www.foley.com/insights/publications/2025/07/trump-administration-passes-the-one-big-beautiful-bill-act/
   salt_cap: 40804                      # $40,000 (2025) +1%/yr: 40,400 (2026), 40,804 (2027). https://www.hrblock.com/tax-center/irs/tax-law-and-policy/one-big-beautiful-bill-salt-deduction/
+  standard_deduction_married_joint: 32200   # VERIFY: tax-year 2026 MFJ figure (IRS Rev. Proc. 2025-32); the 2027 figure is announced ~Oct 2026 and must be checked at https://www.irs.gov/newsroom
+  salt_phaseout_start: 510050          # VERIFY: $500,000 MAGI (2025) +1%/yr: 505,000 (2026), 510,050 (2027); held flat in the model
+  salt_phaseout_rate: 0.30             # VERIFY: cap falls by 30% of MAGI above the threshold
+  salt_floor: 10000                    # VERIFY: phase-down never takes the cap below $10,000
+  first_tax_year: 2027                 # simulation year 0 = first tax year in the home
+  salt_revert_tax_year: 2030           # VERIFY: OBBBA cap reverts to $10,000 from tax year 2030
+  salt_cap_after_revert: 10000         # VERIFY
 
 horizon_years: 12                      # user expects to stay 10+ years
+rent_vs_buy_close_call_pct: 0.02       # verdict is close_call while |NPV| <= 2% of price (docs/FINANCE_MODEL.md §3)
 sensitivity:
   horizons: [5, 7, 10, 12, 15]
   appreciation: [0.02, 0.035, 0.05]

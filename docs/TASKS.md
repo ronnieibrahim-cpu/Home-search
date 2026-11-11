@@ -139,7 +139,7 @@ appears only when the scenario says so; `max_price` is monotone in income and
 savings; the `plan` scenario and both monthly figures match the §2 required
 test; the emergency buffer is never spent; tests use synthetic profiles only.
 
-## [ ] WP8  Rent vs buy
+## [x] WP8  Rent vs buy
 Files: `finance/rent_vs_buy.py`, `tests/test_rent_vs_buy.py`
 
 Implement per `docs/FINANCE_MODEL.md` §3–4.

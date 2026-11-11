@@ -57,7 +57,7 @@ monthly_budget_after_purchase:
   hard_ceiling_total_housing: 13167
 household:
   children_ages: [3, 0]
-  marginal_federal_rate: null
+  marginal_federal_rate: 0.35      # estimate from base salary, married filing jointly; confirm with CPA
   monthly_non_housing_debt: 0
   current_rent_monthly: 3600
   flood_tolerance: x_only

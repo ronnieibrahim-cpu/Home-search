@@ -56,8 +56,13 @@ def make_assumptions(**over) -> Assumptions:
         },
         "renting": {"rent_growth": 0.035, "fallback_price_to_annual_rent": 22},
         "investing": {"return_nominal": 0.065, "inflation": 0.025},
-        "tax": {"mortgage_interest_debt_cap": 750_000, "salt_cap": 40_000},
+        "tax": {"mortgage_interest_debt_cap": 750_000, "salt_cap": 40_000,
+                "standard_deduction_married_joint": 30_000,
+                "salt_phaseout_start": 500_000, "salt_phaseout_rate": 0.30,
+                "salt_floor": 10_000, "first_tax_year": 2027,
+                "salt_revert_tax_year": 2030, "salt_cap_after_revert": 10_000},
         "horizon_years": 12,
+        "rent_vs_buy_close_call_pct": 0.02,
         "sensitivity": {"horizons": [10], "appreciation": [0.035], "rate": [0.0]},
     }
     for key, value in over.items():

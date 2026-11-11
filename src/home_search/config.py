@@ -162,6 +162,17 @@ class Investing(_Strict):
 class Tax(_Strict):
     mortgage_interest_debt_cap: int
     salt_cap: int
+    standard_deduction_married_joint: int
+    # SALT cap phase-down: above `salt_phaseout_start` of income the cap shrinks
+    # by `salt_phaseout_rate` per dollar, never below `salt_floor`.
+    salt_phaseout_start: int
+    salt_phaseout_rate: float
+    salt_floor: int
+    # Simulation year 0 is tax year `first_tax_year`; from `salt_revert_tax_year`
+    # on, the cap is `salt_cap_after_revert` (no phase-down).
+    first_tax_year: int
+    salt_revert_tax_year: int
+    salt_cap_after_revert: int
 
 
 class Sensitivity(_Strict):
@@ -180,6 +191,8 @@ class Assumptions(_Strict):
     investing: Investing
     tax: Tax
     horizon_years: int
+    # Rent-vs-buy verdict is a close call while |NPV| <= this share of price.
+    rent_vs_buy_close_call_pct: float
     sensitivity: Sensitivity
 
 
