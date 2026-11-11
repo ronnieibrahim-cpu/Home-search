@@ -1,0 +1,149 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "source": "SYNTHETIC test fixture: axis-aligned rectangles named after real schools. NOT real attendance boundaries; never copy into data/boundaries/.",
+  "downloaded": null
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Bellaire High School",
+    "level": "high",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.5,
+       29.68
+      ],
+      [
+       -95.44,
+       29.68
+      ],
+      [
+       -95.44,
+       29.72
+      ],
+      [
+       -95.5,
+       29.72
+      ],
+      [
+       -95.5,
+       29.68
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Lamar High School",
+    "level": "high",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.44,
+       29.68
+      ],
+      [
+       -95.38,
+       29.68
+      ],
+      [
+       -95.38,
+       29.74
+      ],
+      [
+       -95.44,
+       29.74
+      ],
+      [
+       -95.44,
+       29.68
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Pershing Middle School",
+    "level": "middle",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.46,
+       29.68
+      ],
+      [
+       -95.4,
+       29.68
+      ],
+      [
+       -95.4,
+       29.72
+      ],
+      [
+       -95.46,
+       29.72
+      ],
+      [
+       -95.46,
+       29.68
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Condit Elementary School",
+    "level": "elementary",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.47,
+       29.7
+      ],
+      [
+       -95.45,
+       29.7
+      ],
+      [
+       -95.45,
+       29.71
+      ],
+      [
+       -95.47,
+       29.71
+      ],
+      [
+       -95.47,
+       29.7
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

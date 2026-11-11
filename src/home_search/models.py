@@ -43,6 +43,9 @@ class Listing(BaseModel):
     days_on_market: int | None = None
     listed_on: date | None = None
     description: str | None = None
+    # School names the listing site reports, keyed elementary / middle / high.
+    # A cross-check only: it can raise zoning to LISTING_CLAIM, never VERIFIED.
+    har_schools: dict[str, str] | None = None
     fetched_at: datetime
 
     @property

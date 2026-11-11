@@ -102,6 +102,11 @@ beds, baths, sqft and canonical URL; `enabled_sources` skips this source
 cleanly when the secrets are absent.
 
 ## [ ] WP5  School zoning
+Status 2026-11-11: code and tests done against SYNTHETIC polygons. The real
+`data/boundaries/sbisd.geojson` and `hisd.geojson` could not be downloaded from
+the build session. Until they exist no listing can be `VERIFIED`, so every
+listing lands in the "zoning unverified" section. Tick when real files are in
+and real-address tests are added.
 Files: `enrich/schools.py`, `data/boundaries/*.geojson`, `tests/test_schools.py`
 
 Source the boundary files per `data/boundaries/README.md`. Load polygons once
@@ -188,6 +193,10 @@ real digest.
       (WP3b, WP3c, WP4) can be built against real samples. Then schedule it.
 - [ ] On that same machine run `python -m pytest -m network` once and report the
       result, so the FEMA flood lookup and Redfin request are checked live.
+- [ ] **School boundary maps.** Download the SBISD and HISD attendance-zone layers
+      per `data/boundaries/README.md` (or open a session with those hosts allowed
+      and ask Claude to do it). Nothing can be confirmed as Memorial HS or
+      Bellaire HS zoned until these are in.
 - [ ] HAR and Redfin saved-search email alerts, with a Gmail filter applying the
       label `home-search`. Wait for WP1 to confirm the zip list.
 - [ ] Gmail app password; GitHub secrets `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `DIGEST_TO`.

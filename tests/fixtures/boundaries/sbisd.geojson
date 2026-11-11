@@ -1,0 +1,149 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "source": "SYNTHETIC test fixture: axis-aligned rectangles named after real schools. NOT real attendance boundaries; never copy into data/boundaries/.",
+  "downloaded": null
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "MEMORIAL H S",
+    "level": "high",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.53,
+       29.76
+      ],
+      [
+       -95.47,
+       29.76
+      ],
+      [
+       -95.47,
+       29.79
+      ],
+      [
+       -95.53,
+       29.79
+      ],
+      [
+       -95.53,
+       29.76
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Stratford High School",
+    "level": "high",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.6,
+       29.76
+      ],
+      [
+       -95.53,
+       29.76
+      ],
+      [
+       -95.53,
+       29.79
+      ],
+      [
+       -95.6,
+       29.79
+      ],
+      [
+       -95.6,
+       29.76
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "Memorial Middle School",
+    "level": "middle",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.56,
+       29.76
+      ],
+      [
+       -95.5,
+       29.76
+      ],
+      [
+       -95.5,
+       29.79
+      ],
+      [
+       -95.56,
+       29.79
+      ],
+      [
+       -95.56,
+       29.76
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "school": "BUNKER HILL EL",
+    "level": "elementary",
+    "school_year": "2026-2027"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -95.52,
+       29.77
+      ],
+      [
+       -95.5,
+       29.77
+      ],
+      [
+       -95.5,
+       29.78
+      ],
+      [
+       -95.52,
+       29.78
+      ],
+      [
+       -95.52,
+       29.77
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}
